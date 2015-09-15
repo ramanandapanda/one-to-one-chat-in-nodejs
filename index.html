@@ -1,35 +1,39 @@
 <!doctype html>
 <html>
   <head>
-    <title> 121 chat</title>
+    <title>121 chat</title>
     <style>
       * { margin: 0; padding: 0; box-sizing: border-box; }
       body { font: 13px Helvetica, Arial; }
-      form { background: #000; padding: 3px; position: fixed; bottom: 0; width: 100%; }
-      form input { border: 0; padding: 10px; width: 90%; margin-right: .5%; }
-      form button { width: 9%; background: rgb(130, 224, 255); border: none; padding: 10px; }
-      #messages { list-style-type: none;margin: 0px;padding: 0px;height: 617px;overflow-y: auto; }
+      form input:focus{outline:none}
+      form { background: #CCD7AE; padding: 3px; position: fixed; top: 0; width: 100%; }
+      form input#m { border: 0; padding: 10px; width: 70%; margin-right: .5%; }
+      form input#m_name { border: 0; padding: 10px; width: 20%; margin-right: .5%; }
+      form .btn{ width: 4%; background: transparent repeating-radial-gradient(#BAD1B0, #F9F9F9 10%, #8AEC8A 15%) repeat scroll 0% 0%; border: none; padding: 10px; }
+      #messages { list-style-type: none;margin: 0px;padding: 0px;height: 617px;overflow-y: auto;margin-top:46px }
       #messages li { padding: 5px 10px; }
+      #messages li:first-child{border: 3px dashed #DD6C24;}
       #messages li:nth-child(odd) { background: #eee; }
     </style>
   </head>
   <body>
-    <ul id="messages"></ul>
-    <form action="">
-      <input id="m" autocomplete="off" /><button>Send</button>
+	  <form action="">
+      <input id="m_name" autocomplete="off" placeholder="Code Name" /><input id="m" autocomplete="off" /><button class ="btn">Send</button><a href="/google" class="btn">Google</a>
     </form>
-    <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
-    <script src="http://code.jquery.com/jquery-1.11.1.js"></script>
+    <ul id="messages"></ul>
+    
+    <script src="js/socket.io-1.2.0.js"></script>
+    <script src="js/jquery-1.11.1.js"></script>
     <script>
       var socket = io();
       $('form').submit(function(){
-        socket.emit('chat message', $('#m').val());
+        socket.emit('chat message', $('#m_name').val()+' : '+$('#m').val());
         $('#m').val('');
         return false;
       });
       socket.on('chat message', function(msg){
 		  notify('hei there', msg);
-        $('#messages').append($('<li>').text(msg));
+        $('#messages').prepend($('<li>').text(msg));
       });
 function notify(title,msg) {
 	
